@@ -4,7 +4,6 @@ import com.swe304.cloudproject.model.Author;
 import com.swe304.cloudproject.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -15,6 +14,10 @@ public class AuthorController {
 
     @GetMapping
     public List<Author> getAll() { return repo.findAll(); }
+
     @PostMapping
     public Author create(@RequestBody Author a) { return repo.save(a); }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) { repo.deleteById(id); }
 }

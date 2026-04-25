@@ -10,7 +10,7 @@ services:
       - "5432:5432"
 
   app:
-    # Kendi DockerHub kullanıcı adını yazacaksın
+    # Kendi DockerHub kullanıcı adını  yazacaksın
     image: ${alperenyazici}/cloudproject:latest
     ports:
       - "80:8080" # Uygulama EC2'nin 80 portunda çalışacak (PDF'teki şarta uygun)

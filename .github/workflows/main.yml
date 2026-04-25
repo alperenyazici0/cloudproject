@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" > .env
+            sed -i 's/${DOCKER_USERNAME}/${{ secrets.DOCKER_USERNAME }}/g' docker-compose.yml
             sudo docker compose down
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/cloudproject:latest
             sudo docker compose up -d

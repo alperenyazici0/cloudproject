@@ -1,11 +1,9 @@
 package com.swe304.cloudproject.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 @Entity
 @Table(name = "authors")
-@Data
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +14,29 @@ public class Author {
 
     @Column(length = 32)
     private String address;
+
+    // --- Manuel Getter ve Setterlar (Lombok yerine garanti çözüm) ---
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

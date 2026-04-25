@@ -1,0 +1,58 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 2. Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21' # Veya start.spring.io'da seçtiğin Java sürümü
+          distribution: 'temurin'
+
+      - name: 3. Build JAR with Maven
+        run: mvn clean package -DskipTests
+
+      - name: 4. Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 5. Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/cloudproject:latest
+
+      - name: 6. Copy compose file to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "/home/${{ secrets.EC2_USER }}/"
+
+      - name: 7. Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            sudo docker compose down
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/cloudproject:latest
+            sudo docker compose up -d

@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 6161
+      POSTGRES_DB: cloudprojectdb
+    ports:
+      - "5432:5432"
+
+  app:
+    # Kendi DockerHub kullanıcı adını yazacaksın
+    image: ${alperenyazici}/cloudproject:latest
+    ports:
+      - "80:8080" # Uygulama EC2'nin 80 portunda çalışacak (PDF'teki şarta uygun)
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/cloudprojectdb

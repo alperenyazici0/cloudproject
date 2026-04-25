@@ -7,6 +7,9 @@ services:
       POSTGRES_DB: cloudprojectdb
     ports:
       - "5432:5432"
+    # Burası veritabanının "Hard Diski" oluyor:
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   app:
     image: alperenyazici/cloudproject:latest
@@ -18,3 +21,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/cloudprojectdb
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 6161
+
+# Docker'a bu diski oluşturmasını söylüyoruz:
+volumes:
+  postgres_data:

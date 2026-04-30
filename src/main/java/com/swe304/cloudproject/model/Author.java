@@ -15,7 +15,7 @@ public class Author {
     @Column(length = 32)
     private String address;
 
-    // --- Manuel Getter ve Setterlar (Lombok yerine garanti çözüm) ---
+    //Getter setter eklendi
     public Integer getId() {
         return id;
     }

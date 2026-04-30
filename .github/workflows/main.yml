@@ -36,23 +36,22 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/cloudproject:latest
 
-      - name: 6. Copy compose file to EC2
+      - name: 6. Copy files to EC2
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker-compose.yml"
-          target: "/home/${{ secrets.EC2_USER }}/.deploy"
+
+          source: "docker-compose.yml,proje-deploy/"
+          target: "/home/${{ secrets.EC2_USER }}/" # Ana dizine atar
 
       - name: 7. Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
-              host: ${{ secrets.EC2_HOST }}
-              username: ${{ secrets.EC2_USER }}
-              key: ${{ secrets.EC2_SSH_KEY }}
-              script: |
-               cd ~/.deploy
-               sudo docker compose down
-               sudo docker pull alperenyazici/cloudproject:latest
-               sudo docker compose up -d
+            host: ${{ secrets.EC2_HOST }}
+            username: ${{ secrets.EC2_USER }}
+            key: ${{ secrets.EC2_SSH_KEY }}
+            script: |
+              sudo docker compose pull
+              sudo docker compose up -d

@@ -21,7 +21,7 @@ public class Publish {
     private LocalDate publishDate;
     private Integer edition;
 
-    // --- Manuel Getter & Setter ---
+    //yorum
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 

@@ -43,8 +43,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
 
-          source: "docker-compose.yml,proje-deploy/"
-          target: "/home/${{ secrets.EC2_USER }}/" # Ana dizine atar
+          source: "docker-compose.yml"
+          target: "/home/${{ secrets.EC2_USER }}/"
 
       - name: 7. Deploy to EC2
         uses: appleboy/ssh-action@master

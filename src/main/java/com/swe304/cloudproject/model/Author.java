@@ -15,7 +15,7 @@ public class Author {
     @Column(length = 32)
     private String address;
 
-    //Getter setter eklendi
+    //Getter setter
     public Integer getId() {
         return id;
     }
